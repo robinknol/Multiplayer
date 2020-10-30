@@ -6,7 +6,8 @@ let ega = ["#000000", "#0000aa", "#00aa00", "#00aaaa", "#aa0000", "#aa00aa", "#a
 let pallet = [];
 let drawing = [];
 let boxWidth = boxHeight = 40;
-//let refreshTimer = window.setInterval(serverGetJson, 2000); // timer get data from server
+let refreshTimer = window.setInterval(serverGetJson, 200); // timer get data from server
+
 class Bit
 {
   constructor(x, y, color)
@@ -31,7 +32,7 @@ class Bit
         {
           this.color = colorSelection;
           this.draw(context);
-          // serverWriteJson(drawing);
+          serverWriteJson(drawing);
         }
       }
     })
@@ -67,7 +68,7 @@ function init()
   // init playfield
   for (i = 0; i < 80; i++)
   {
-    //grid 10 cols x 8 rows
+    // grid 10 cols x 8 rows
     let numOnRow = 10;
     let bitWidth = boxWidth;
     let x = (i % numOnRow) * bitWidth;
@@ -82,7 +83,15 @@ function readJson(jsonString)
 {
   jsonObj = JSON.parse(jsonString);
   // hier komt jouw code
+  for (i = 0; i < 80; i++)
+  {
+    drawing[i].x = jsonObj[i].x;
+    drawing[i].y = jsonObj[i].y;
+    drawing[i].color = jsonObj[i].color;
+    drawing[i].draw(context);
+  } 
 }
 
 init();
 
+document.getElementById("logo").addEventListener('click', preload);
